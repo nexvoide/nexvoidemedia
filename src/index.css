@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 233 96% 10%;
+    --foreground: 0 0% 100%;
+    --card: 233 96% 12%;
+    --card-foreground: 0 0% 100%;
+    --popover: 233 96% 10%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 233 100% 58%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 233 96% 15%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 233 96% 15%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 233 100% 58%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 233 50% 20%;
+    --input: 233 50% 20%;
+    --ring: 233 100% 58%;
+    --radius: 0.75rem;
+    
+    --nexvoide-dark: #010333;
+    --nexvoide-blue: #2642ff;
+    --nexvoide-white: #ffffff;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-[#010333] text-white antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80;
+  }
+  
+  .bg-nexvoide-dark {
+    background-color: #010333;
+  }
+  
+  .bg-nexvoide-blue {
+    background-color: #2642ff;
+  }
+  
+  .text-nexvoide-blue {
+    color: #2642ff;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #010333;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2642ff;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3d57ff;
+}
+
+/* Animation utilities */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(38, 66, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(38, 66, 255, 0.5);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
