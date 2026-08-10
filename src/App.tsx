@@ -87,6 +87,7 @@ function App() {
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPricingDialogOpen, setIsPricingDialogOpen] = useState(false);
 
   const currencyOptions = [
     { value: 'USD', label: 'United States', symbol: '$' },
@@ -710,41 +711,83 @@ function App() {
         <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <AnimatedSection>
-              <div className="text-center mb-8 md:mb-10 lg:mb-12">
-                <div className="inline-block mb-3 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-                  <span className="text-xs font-medium bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                    Flexible Plans
-                  </span>
+              <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between mb-8 md:mb-10 lg:mb-12">
+                <div className="text-center md:text-left flex-1">
+                  <div className="inline-block mb-3 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
+                    <span className="text-xs font-medium bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                      Flexible Plans
+                    </span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3">
+                    Right Pricing Packages
+                  </h2>
+                  <p className="text-base md:text-lg text-white/60 max-w-2xl">
+                    Choose your plan and scale by adding more editors.
+                  </p>
                 </div>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3">
-                  Right Pricing Packages
-                </h2>
-                <p className="text-base md:text-lg text-white/60 max-w-2xl mx-auto">
-                  Choose your plan and scale by adding more editors.
-                </p>
+
+                <div className="flex flex-col items-center md:items-end gap-2">
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setIsPricingDialogOpen(true)}
+                      className="rounded-full border border-blue-400/30 bg-blue-500/10 px-3 py-1.5 text-xs font-semibold text-blue-200 transition-all duration-200 hover:border-blue-300/50 hover:bg-blue-500/20 hover:text-white"
+                    >
+                      Pricing negotiable?
+                    </button>
+                    <Select value={selectedCurrency} onValueChange={(value) => setSelectedCurrency(value as CurrencyCode)}>
+                      <SelectTrigger className="w-[220px] rounded-xl border-white/10 bg-white/5 text-white">
+                        <SelectValue placeholder="Select currency" />
+                      </SelectTrigger>
+                      <SelectContent className="border-white/10 bg-[#010333] text-white">
+                        {currencyOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value} className="focus:bg-white/10">
+                            {option.label} ({option.value})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <p className="text-xs text-white/40 text-center md:text-right">
+                    {fxLoading ? 'Loading live exchange rates…' : `Prices are shown in ${selectedCurrencyOption.label} using live rates.`}
+                  </p>
+                </div>
               </div>
             </AnimatedSection>
 
-            <AnimatedSection delay={100}>
-              <div className="flex flex-col items-center justify-center gap-3 mb-6 md:mb-8">
-                <div className="text-sm text-white/60">Show pricing in</div>
-                <Select value={selectedCurrency} onValueChange={(value) => setSelectedCurrency(value as CurrencyCode)}>
-                  <SelectTrigger className="w-full sm:w-[240px] rounded-xl border-white/10 bg-white/5 text-white">
-                    <SelectValue placeholder="Select currency" />
-                  </SelectTrigger>
-                  <SelectContent className="border-white/10 bg-[#010333] text-white">
-                    {currencyOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value} className="focus:bg-white/10">
-                        {option.label} ({option.value})
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <p className="text-xs text-white/40">
-                  {fxLoading ? 'Loading live exchange rates…' : `Prices are shown in ${selectedCurrencyOption.label} using live rates.`}
-                </p>
-              </div>
-            </AnimatedSection>
+            <Dialog open={isPricingDialogOpen} onOpenChange={setIsPricingDialogOpen}>
+              <DialogContent className="border border-white/10 bg-[#020544]/95 text-white sm:max-w-md p-0 overflow-hidden shadow-2xl shadow-blue-500/10">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-transparent to-purple-500/20" />
+                  <div className="relative p-6 sm:p-8">
+                    <DialogHeader className="mb-4">
+                      <div className="inline-flex w-fit items-center gap-2 rounded-full border border-blue-400/30 bg-blue-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-blue-200">
+                        Flexible Pricing
+                      </div>
+                      <DialogTitle className="text-2xl font-bold text-white">Pricing is negotiable</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <p className="text-sm leading-relaxed text-white/75">
+                        Final pricing can be adjusted based on your scope, editor count, turnaround time, and long-term partnership needs.
+                      </p>
+                      <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/70">
+                        <p className="font-medium text-white">Why this helps:</p>
+                        <ul className="mt-2 space-y-1">
+                          <li>• Better rates for larger volume</li>
+                          <li>• Flexible terms for long-term partnerships</li>
+                          <li>• Custom plans for your workflow and budget</li>
+                        </ul>
+                      </div>
+                      <Button
+                        onClick={() => setIsPricingDialogOpen(false)}
+                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                      >
+                        Got it
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
 
             <AnimatedSection delay={140}>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
